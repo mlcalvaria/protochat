@@ -10,19 +10,26 @@
 
 //@prepros-append start/start.module.js
 //@prepros-append start/start.controller.js
+//@prepros-append start/Chat.service.js
+//@prepros-append start/prompt.directive.js
 
 var app = angular.module('app', [
     'ngRoute',
     'global',
     'start',
-    'purr'
+    'purr',
+    'firebase'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
 
     $routeProvider
 
-        .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl'})
+        .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl',resolve:{
+            data: function(Chat){
+                return Chat.loadMessages();
+            }
+        }})
 
         .when('/404', {templateUrl: './partials/global/404.html',controller:'404Ctrl'})
 

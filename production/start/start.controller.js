@@ -1,11 +1,9 @@
-startModule.controller('startCtrl',function($scope,$location,$routeParams,Survey){
+startModule.controller('startCtrl',function($scope,Chat){
 
-    $scope.year = $routeParams.year;
+    $scope.messages = Chat.messages;
 
-    $scope.startSurvey = function(){
-
-        $location.path('/survey');
-
-    }
+    $scope.addMessage = function(msg){
+        Chat.postMessage(msg);
+    };
 
 });

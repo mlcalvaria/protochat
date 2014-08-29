@@ -1,3 +1,1 @@
-var SERVER = {
-
-};
+var FIREBASE = 'https://proto-chat.firebaseio.com/';

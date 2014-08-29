@@ -11,18 +11,25 @@
 
 
 
+
+
 var app = angular.module('app', [
     'ngRoute',
     'global',
     'start',
-    'purr'
+    'purr',
+    'firebase'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
 
     $routeProvider
 
-        .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl'})
+        .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl',resolve:{
+            data: function(Chat){
+                return Chat.loadMessages();
+            }
+        }})
 
         .when('/404', {templateUrl: './partials/global/404.html',controller:'404Ctrl'})
 
@@ -34,13 +41,22 @@ app.config(['$routeProvider', function($routeProvider) {
 
 
 
-var SERVER = {
-
-};
+var FIREBASE = 'https://proto-chat.firebaseio.com/';
 var globalModule = angular.module('global',[]);
 globalModule.service('toolkit',function(){
 
     return{
+
+        // returns both getDate() and getTime()
+        getTimestamp: function(){
+
+            var timestamp;
+
+            timestamp = this.getDate() + ' ' + this.getTime();
+
+            return timestamp;
+
+        },
 
         /**
          * Returns the current date [YYYY-MM-DD or YYYY.MM.DD]
@@ -62,6 +78,17 @@ globalModule.service('toolkit',function(){
             }
 
             return today;
+        },
+
+        //returns the current time [HH:MM]
+        getTime: function(){
+
+            var today = new Date();
+            var hours = today.getHours();
+            var minutes = today.getMinutes();
+
+            return hours + ':' + minutes;
+
         },
 
         /**
@@ -863,13 +890,88 @@ globalModule.controller('404Ctrl',function(){
 
 });
 var startModule = angular.module('start',[]);
-startModule.controller('startCtrl',function($scope,$location,$routeParams,Survey){
+startModule.controller('startCtrl',function($scope,Chat){
 
-    $scope.year = $routeParams.year;
+    $scope.messages = Chat.messages;
 
-    $scope.startSurvey = function(){
+    $scope.addMessage = function(msg){
+        Chat.postMessage(msg);
+    };
 
-        $location.path('/survey');
+});
+startModule.factory('Chat',function($firebase){
+
+    var ref = $firebase (new Firebase (FIREBASE + '/messages'));
+
+    /**
+     * Daten als Firebase Array laden
+     *
+     * @see https://www.firebase.com/docs/web/libraries/angular/api.html
+     */
+    var messages = ref.$asArray();
+
+    return{
+
+        messages: [],
+
+        loadMessages: function(){
+
+            //Daten per Service verfügbar machen
+            this.messages = messages;
+
+            //Promise zurückliefern um resolve im Router zu ermöglichen
+            return messages.$loaded();
+        },
+
+        postMessage: function(msg){
+            this.messages.$add(msg);
+        }
+
+    }
+
+});
+startModule.directive('prompt',function(User,tookit,purr){
+
+    return{
+
+        restrict: 'E',
+        scope: false,
+        link: function(scope,element,attrs){
+
+            // Nachrichten Objekt zum Senden an den Chat erzeugen
+            function createMessage(){
+
+                var message = {
+                    poster: User.name,
+                    value: scope.message,
+                    timestamp: tookit.getTimestamp()
+                };
+
+
+                return message;
+            }
+
+            // Nachrichten durch Enter senden
+            function postOnEnter(e){
+
+                var message = createMessage();
+
+                if(!message.value){
+                    purr.error('Kein Inhalt');
+                    return;
+                }
+
+                if(e.keyCode == 13){
+                    scope.$apply(function(){
+                        scope.addMessage(message);
+                    });
+                }
+
+            }
+
+            element.bind('keydown',postOnEnter);
+
+        }
 
     }
 

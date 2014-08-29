@@ -2,6 +2,17 @@ globalModule.service('toolkit',function(){
 
     return{
 
+        // returns both getDate() and getTime()
+        getTimestamp: function(){
+
+            var timestamp;
+
+            timestamp = this.getDate() + ' ' + this.getTime();
+
+            return timestamp;
+
+        },
+
         /**
          * Returns the current date [YYYY-MM-DD or YYYY.MM.DD]
          *
@@ -22,6 +33,17 @@ globalModule.service('toolkit',function(){
             }
 
             return today;
+        },
+
+        //returns the current time [HH:MM]
+        getTime: function(){
+
+            var today = new Date();
+            var hours = today.getHours();
+            var minutes = today.getMinutes();
+
+            return hours + ':' + minutes;
+
         },
 
         /**
