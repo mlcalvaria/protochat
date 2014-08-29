@@ -12,22 +12,10 @@
     </div>
 </div>
 
-
-    <div class="prompt-container">
-        <textarea ng-model="message" class="prompt-input"></textarea>
-
-        <button ng-click="addMessage()" class="prompt-send icon-arrow-right"></button>
-    </div>
-
-
-    <div class="msgContainer">
-        <div class="historie"></div>
-    </div>
-
     <div class="inputarea">
-        <textarea class="form-control bottom-hook-area" rows="3"></textarea>
+        <textarea ng-model="message" class="form-control bottom-hook-area" rows="3"></textarea>
         <span class="buttonfortxtarea">
-            <button class="btn btn-default description_edit bottom-hook-btn fontweight">
+            <button ng-click="addMessage()" class="btn btn-default description_edit bottom-hook-btn fontweight">
                 Send
             </button>
         </span>
