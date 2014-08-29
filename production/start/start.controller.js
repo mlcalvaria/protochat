@@ -7,6 +7,8 @@ startModule.controller('startCtrl',function($scope,Chat,MessageService){
         var message = MessageService.createMessage($scope.message);
 
         Chat.postMessage(message);
+
+        $scope.message = '';
     };
 
 });

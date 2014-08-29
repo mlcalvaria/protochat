@@ -7,13 +7,13 @@
         <div ng-repeat="message in messages">
             <span>[{{message.timestamp}}]</span> -
             <span>[{{message.poster}}]</span> :
-            <span>[{{message.value}}]</span>
+            <span>{{message.value}}</span>
         </div>
     </div>
 </div>
 
     <div class="inputarea">
-        <textarea ng-model="message" class="form-control bottom-hook-area" rows="3"></textarea>
+        <textarea prompt="" ng-model="message" class="form-control bottom-hook-area" rows="3"></textarea>
         <span class="buttonfortxtarea">
             <button ng-click="addMessage()" class="btn btn-default description_edit bottom-hook-btn fontweight">
                 Send

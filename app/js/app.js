@@ -938,6 +938,8 @@ startModule.controller('startCtrl',function($scope,Chat,MessageService){
         var message = MessageService.createMessage($scope.message);
 
         Chat.postMessage(message);
+
+        $scope.message = '';
     };
 
 });
@@ -945,11 +947,11 @@ startModule.factory('MessageService',function(User,toolkit){
 
     // Nachrichten Objekt zum Senden an den Chat erzeugen
     function createMessage(message){
-console.dir(User);debugger;
+
         var message = {
             poster: User.getName(),
             value: message,
-            timestamp: toolkit.getTimestamp()
+            timestamp: toolkit.getTime()
         };
 
 
@@ -998,7 +1000,7 @@ startModule.directive('prompt',function(MessageService,purr){
 
     return{
 
-        restrict: 'E',
+        restrict: 'A',
         scope: false,
         link: function(scope,element,attrs){
 
@@ -1007,12 +1009,10 @@ startModule.directive('prompt',function(MessageService,purr){
 
                 var message = MessageService.createMessage();
 
-                if(!message.value){
-                    purr.error('Kein Inhalt');
-                    return;
-                }
+                if(e.which == 13 && e.ctrlKey){
 
-                if(e.keyCode == 13){
+                    e.preventDefault();
+
                     scope.$apply(function(){
                         scope.addMessage(message);
                     });
