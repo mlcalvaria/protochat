@@ -1,16 +1,18 @@
 <div class="container">
 
-<span class="settings icon-gear"></span>
+    <div class="msgContainer">
+        <button class="btn btn-default top-right">
+            <span class=" icon-cog"></span>
+            Settings
+        </button>
 
-<div class="msgContainer">
-    <div class="historie">
-        <div ng-repeat="message in messages">
-            <span>[{{message.timestamp}}]</span> -
-            <span>[{{message.poster}}]</span> :
-            <span>[{{message.value}}]</span>
+        <div class="historie">
+            <div ng-repeat="message in messages">
+                <span class="timestampcolor">[{{message.timestamp}}] - </span>
+                <span class="usercolor">[{{message.poster}}]</span> :
+                <span>{{message.value}}</span>
+            </div>
         </div>
-    </div>
-</div>
 
     <div class="inputarea">
         <textarea ng-model="message" class="form-control bottom-hook-area" rows="3"></textarea>
@@ -21,4 +23,5 @@
         </span>
     </div>
 
+    </div>
 </div>
