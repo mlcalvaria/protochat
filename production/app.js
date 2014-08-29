@@ -7,6 +7,7 @@
 //@prepros-append global/info.directive.js
 //@prepros-append global/purr.js
 //@prepros-append global/404.controller.js
+//@prepros-append global/user.service.js
 
 //@prepros-append start/start.module.js
 //@prepros-append start/start.controller.js
@@ -27,8 +28,21 @@ app.config(['$routeProvider', function($routeProvider) {
 
         .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl',resolve:{
 
-            userdata: function(User){
-                //Todo: user service
+            userdata: function($q,User){
+
+                var username = User.getName(),
+                    defer = $q.defer();
+
+                if(!username){
+                    var result = window.prompt('Benutzername, bitte?');
+                    User.setName(result);
+                    defer.resolve();
+                } else{
+                    defer.resolve();
+                }
+
+                return defer.promise;
+
             },
 
             data: function(Chat){

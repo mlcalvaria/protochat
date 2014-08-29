@@ -13,6 +13,7 @@
 
 
 
+
 var app = angular.module('app', [
     'ngRoute',
     'global',
@@ -26,6 +27,24 @@ app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
 
         .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl',resolve:{
+
+            userdata: function($q,User){
+
+                var username = User.getName(),
+                    defer = $q.defer();
+
+                if(!username){
+                    var result = window.prompt('Benutzername, bitte?');
+                    User.setName(result);
+                    defer.resolve();
+                } else{
+                    defer.resolve();
+                }
+
+                return defer.promise;
+
+            },
+
             data: function(Chat){
                 return Chat.loadMessages();
             }
@@ -889,13 +908,26 @@ purr.provider('purr',function(){
 globalModule.controller('404Ctrl',function(){
 
 });
+globalModule.service('User',function(){
+
+    var name;
+
+    this.setName = function(newName){
+        name = newName;
+    };
+
+    this.getName = function(){
+        return name;
+    };
+
+});
 var startModule = angular.module('start',[]);
 startModule.controller('startCtrl',function($scope,Chat){
 
     $scope.messages = Chat.messages;
 
     $scope.addMessage = function(msg){
-        Chat.postMessage(msg);
+        Chat.postMessage($scope.messages);
     };
 
 });
@@ -924,6 +956,7 @@ startModule.factory('Chat',function($firebase){
         },
 
         postMessage: function(msg){
+            console.dir();
             this.messages.$add(msg);
         }
 
@@ -937,6 +970,8 @@ startModule.directive('prompt',function(User,tookit,purr){
         restrict: 'E',
         scope: false,
         link: function(scope,element,attrs){
+
+            //Todo: message Service
 
             // Nachrichten Objekt zum Senden an den Chat erzeugen
             function createMessage(){

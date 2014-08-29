@@ -1,18 +1,24 @@
 <div class="container">
 
-<div class="msgContainer">
-    <div class="historie"></div>
-</div>
-
-    <div class="">
-        <input>
-        <button></button>
-    </div>
-
     <span class="settings icon-gear"></span>
 
-    <textarea class="input"></textarea>
+<div class="msgContainer">
+    <div class="historie">
+        <div ng-repeat="message in messages">
+            <span>[{{message.timestamp}}]</span> -
+            <span>[{{message.poster}}]</span> :
+            <span>[{{message.value}}]</span>
+        </div>
+    </div>
+</div>
 
-    <button class="send"></button>
+
+    <div class="prompt-container">
+        <textarea ng-model="message" class="prompt-input"></textarea>
+
+        <button ng-click="addMessage()" class="prompt-send icon-arrow-right"></button>
+    </div>
+
+
 
 </div>

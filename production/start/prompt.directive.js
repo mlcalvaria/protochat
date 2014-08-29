@@ -6,6 +6,8 @@ startModule.directive('prompt',function(User,tookit,purr){
         scope: false,
         link: function(scope,element,attrs){
 
+            //Todo: message Service
+
             // Nachrichten Objekt zum Senden an den Chat erzeugen
             function createMessage(){
 
