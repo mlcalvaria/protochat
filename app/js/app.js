@@ -14,6 +14,7 @@
 
 
 
+
 var app = angular.module('app', [
     'ngRoute',
     'global',
@@ -914,21 +915,51 @@ globalModule.service('User',function(){
 
     this.setName = function(newName){
         name = newName;
+        localStorage['username'] = name;
     };
 
     this.getName = function(){
+
+        if(localStorage['username']){
+            name = localStorage['username'];
+        }
+
         return name;
     };
 
 });
 var startModule = angular.module('start',[]);
-startModule.controller('startCtrl',function($scope,Chat){
+startModule.controller('startCtrl',function($scope,Chat,MessageService){
 
     $scope.messages = Chat.messages;
 
-    $scope.addMessage = function(msg){
-        Chat.postMessage($scope.messages);
+    $scope.addMessage = function(){
+
+        var message = MessageService.createMessage($scope.message);
+
+        Chat.postMessage(message);
     };
+
+});
+startModule.factory('MessageService',function(User,toolkit){
+
+    // Nachrichten Objekt zum Senden an den Chat erzeugen
+    function createMessage(message){
+console.dir(User);debugger;
+        var message = {
+            poster: User.getName(),
+            value: message,
+            timestamp: toolkit.getTimestamp()
+        };
+
+
+        return message;
+    }
+
+    return{
+        createMessage: createMessage
+    }
+
 
 });
 startModule.factory('Chat',function($firebase){
@@ -963,7 +994,7 @@ startModule.factory('Chat',function($firebase){
     }
 
 });
-startModule.directive('prompt',function(User,tookit,purr){
+startModule.directive('prompt',function(MessageService,purr){
 
     return{
 
@@ -971,25 +1002,10 @@ startModule.directive('prompt',function(User,tookit,purr){
         scope: false,
         link: function(scope,element,attrs){
 
-            //Todo: message Service
-
-            // Nachrichten Objekt zum Senden an den Chat erzeugen
-            function createMessage(){
-
-                var message = {
-                    poster: User.name,
-                    value: scope.message,
-                    timestamp: tookit.getTimestamp()
-                };
-
-
-                return message;
-            }
-
             // Nachrichten durch Enter senden
             function postOnEnter(e){
 
-                var message = createMessage();
+                var message = MessageService.createMessage();
 
                 if(!message.value){
                     purr.error('Kein Inhalt');

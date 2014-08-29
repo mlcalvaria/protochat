@@ -1,4 +1,4 @@
-startModule.directive('prompt',function(User,tookit,purr){
+startModule.directive('prompt',function(MessageService,purr){
 
     return{
 
@@ -6,25 +6,10 @@ startModule.directive('prompt',function(User,tookit,purr){
         scope: false,
         link: function(scope,element,attrs){
 
-            //Todo: message Service
-
-            // Nachrichten Objekt zum Senden an den Chat erzeugen
-            function createMessage(){
-
-                var message = {
-                    poster: User.name,
-                    value: scope.message,
-                    timestamp: tookit.getTimestamp()
-                };
-
-
-                return message;
-            }
-
             // Nachrichten durch Enter senden
             function postOnEnter(e){
 
-                var message = createMessage();
+                var message = MessageService.createMessage();
 
                 if(!message.value){
                     purr.error('Kein Inhalt');

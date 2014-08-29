@@ -1,9 +1,12 @@
-startModule.controller('startCtrl',function($scope,Chat){
+startModule.controller('startCtrl',function($scope,Chat,MessageService){
 
     $scope.messages = Chat.messages;
 
-    $scope.addMessage = function(msg){
-        Chat.postMessage($scope.messages);
+    $scope.addMessage = function(){
+
+        var message = MessageService.createMessage($scope.message);
+
+        Chat.postMessage(message);
     };
 
 });

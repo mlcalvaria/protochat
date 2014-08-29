@@ -11,6 +11,7 @@
 
 //@prepros-append start/start.module.js
 //@prepros-append start/start.controller.js
+//@prepros-append start/Message.service.js
 //@prepros-append start/Chat.service.js
 //@prepros-append start/prompt.directive.js
 
