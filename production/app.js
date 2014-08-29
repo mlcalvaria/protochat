@@ -26,6 +26,11 @@ app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
 
         .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl',resolve:{
+
+            userdata: function(User){
+                //Todo: user service
+            },
+
             data: function(Chat){
                 return Chat.loadMessages();
             }
