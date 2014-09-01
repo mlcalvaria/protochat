@@ -30,20 +30,7 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl',resolve:{
 
             userdata: function($q,User){
-
-                var username = User.getName(),
-                    defer = $q.defer();
-
-                if(!username){
-                    var result = window.prompt('Benutzername, bitte?');
-                    User.setName(result);
-                    defer.resolve();
-                } else{
-                    defer.resolve();
-                }
-
-                return defer.promise;
-
+                return User.promptForName();
             },
 
             data: function(Chat){
@@ -909,7 +896,7 @@ purr.provider('purr',function(){
 globalModule.controller('404Ctrl',function(){
 
 });
-globalModule.service('User',function(){
+globalModule.service('User',function($q){
 
     var name;
 
@@ -926,6 +913,18 @@ globalModule.service('User',function(){
 
         return name;
     };
+
+    this.promptForName = function(){
+
+        var defer = $q.defer();
+
+        var name = window.prompt('Benutzername, bitte?');
+        this.setName(name);
+
+        defer.resolve();
+
+        return defer.promise;
+    }
 
 });
 var startModule = angular.module('start',[]);

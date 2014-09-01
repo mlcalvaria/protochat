@@ -30,20 +30,7 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl',resolve:{
 
             userdata: function($q,User){
-
-                var username = User.getName(),
-                    defer = $q.defer();
-
-                if(!username){
-                    var result = window.prompt('Benutzername, bitte?');
-                    User.setName(result);
-                    defer.resolve();
-                } else{
-                    defer.resolve();
-                }
-
-                return defer.promise;
-
+                return User.promptForName();
             },
 
             data: function(Chat){
