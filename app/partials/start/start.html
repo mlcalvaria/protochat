@@ -1,26 +1,23 @@
 <div class="container">
 
-    <div class="msgContainer">
-        <button class="btn btn-default top-right">
-            <span class=" icon-cog"></span>
+    <div class="msgContainer hover-settings">
+        <button class="btn btn-default top-right setting-btn">
+            <span class="icon-cog settings-icon"></span>
             Settings
         </button>
     </div>
 
 <div class="msgContainer">
-    <div class="historie">
-        <div ng-repeat="message in messages">
-            <span>[{{message.timestamp}}]</span> -
-            <span>[{{message.poster}}]</span> :
-            <span>{{message.value}}</span>
-        </div>
-        <div class="historie">
+
+       <div class="historie">
             <div ng-repeat="message in messages">
-                <span class="timestampcolor">[{{message.timestamp}}] - </span>
-                <span class="usercolor">[{{message.poster}}]</span> :
-                <span>{{message.value}}</span>
+                <div class=" user-hover">
+                    <span class="usercolor">{{message.poster}}</span>
+                    <span class="timestampcolor">{{message.timestamp}}</span>
+                      <p class="line-break">{{message.value}}</p>
+                </div>
             </div>
-        </div>
+       </div>
 
     <div class="inputarea">
         <textarea prompt="" ng-model="message" class="form-control bottom-hook-area" rows="3"></textarea>
