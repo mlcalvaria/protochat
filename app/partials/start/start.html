@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="msgContainer hover-settings">
-        <button class="btn btn-default top-right setting-btn">
+        <button class="btn btn-default top-right setting-btn" ng-click="toggleMenu()">
             <span class="icon-cog settings-icon"></span>
             Settings
         </button>
@@ -22,7 +22,7 @@
     <div class="inputarea">
         <textarea prompt="" ng-model="message" class="form-control bottom-hook-area" rows="3"></textarea>
         <span class="buttonfortxtarea">
-            <button ng-click="addMessage()" class="btn btn-default description_edit bottom-hook-btn fontweight">
+            <button ng-click="addMessage()" class="btn btn-default bottom-hook-btn fontweight">
                 Send
             </button>
         </span>
@@ -30,3 +30,5 @@
 
     </div>
 </div>
+
+<push-menu></push-menu>
