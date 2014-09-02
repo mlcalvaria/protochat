@@ -31,7 +31,14 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/', {templateUrl: './partials/start/start.html',controller:'startCtrl',resolve:{
 
             userdata: function($q,User){
-                return User.promptForName();
+
+                if(User.getName()){
+                    return;
+                }
+                else{
+                    return User.promptForName();
+                }
+
             },
 
             data: function(Chat){

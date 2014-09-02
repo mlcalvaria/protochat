@@ -23,7 +23,6 @@ startModule.factory('Chat',function($firebase){
         },
 
         postMessage: function(msg){
-            console.dir();
             this.messages.$add(msg);
         }
 
