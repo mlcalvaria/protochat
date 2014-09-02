@@ -1,4 +1,4 @@
-globalModule.service('User',function(){
+globalModule.service('User',function($q){
 
     var name;
 
@@ -15,5 +15,17 @@ globalModule.service('User',function(){
 
         return name;
     };
+
+    this.promptForName = function(){
+
+        var defer = $q.defer();
+
+        var name = window.prompt('Benutzername, bitte?');
+        this.setName(name);
+
+        defer.resolve();
+
+        return defer.promise;
+    }
 
 });
