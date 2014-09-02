@@ -1,4 +1,4 @@
-startModule.directive('prompt',function(MessageService,purr){
+startModule.directive('prompt',function(MessageService){
 
     return{
 
@@ -6,7 +6,8 @@ startModule.directive('prompt',function(MessageService,purr){
         scope: false,
         link: function(scope,element,attrs){
 
-            // Nachrichten durch Enter senden
+            element.bind('keydown',postOnEnter);
+
             function postOnEnter(e){
 
                 var message = MessageService.createMessage();
@@ -21,8 +22,6 @@ startModule.directive('prompt',function(MessageService,purr){
                 }
 
             }
-
-            element.bind('keydown',postOnEnter);
 
         }
 

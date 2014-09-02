@@ -16,6 +16,8 @@
 
 
 
+
+
 var app = angular.module('app', [
     'ngRoute',
     'global',
@@ -1010,7 +1012,7 @@ startModule.factory('Chat',function($firebase,purr){
     }
 
 });
-startModule.directive('prompt',function(MessageService,purr){
+startModule.directive('prompt',function(MessageService){
 
     return{
 
@@ -1018,7 +1020,8 @@ startModule.directive('prompt',function(MessageService,purr){
         scope: false,
         link: function(scope,element,attrs){
 
-            // Nachrichten durch Enter senden
+            element.bind('keydown',postOnEnter);
+
             function postOnEnter(e){
 
                 var message = MessageService.createMessage();
@@ -1033,8 +1036,6 @@ startModule.directive('prompt',function(MessageService,purr){
                 }
 
             }
-
-            element.bind('keydown',postOnEnter);
 
         }
 
@@ -1076,4 +1077,34 @@ startModule.directive('historyScroll',function($timeout){
         }
     }
 
+});
+startModule.directive('pushMenu',function(){
+       return{
+        
+        restrict: 'E',
+        scope: {},
+        templateUrl: "partials/pushMenu/pushMenu.html",
+        link: function (scope, element) {
+
+
+            scope.open = false;
+
+            /**
+             * Wir bilden ein jQLite Element aus dem Wurzelelement um unser Nav-Element zu finden
+             *
+             * @see https://docs.angularjs.org/api/ng/function/angular.element
+             */
+            var el = angular.element(element);
+
+            var nav = element.find('nav')[0];
+
+            scope.toggleMenu = function(){
+                scope.open = !scope.open;
+            };
+        }
+        
+        
+    }
+    
+    
 });

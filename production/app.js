@@ -15,6 +15,8 @@
 //@prepros-append start/Chat.service.js
 //@prepros-append start/prompt.directive.js
 //@prepros-append start/historyScroll.directive.js
+//@prepros-append start/pushMenu.directive.js
+
 
 var app = angular.module('app', [
     'ngRoute',
