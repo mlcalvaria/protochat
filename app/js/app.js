@@ -102,6 +102,8 @@ globalModule.service('toolkit',function(){
             var hours = today.getHours();
             var minutes = today.getMinutes();
 
+
+            minutes = minutes < 10 ? '0' + minutes.toString() : minutes;
             return hours + ':' + minutes;
 
         },
