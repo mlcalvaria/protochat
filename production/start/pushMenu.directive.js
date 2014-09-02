@@ -6,10 +6,20 @@ startModule.directive('pushMenu',function(){
         templateUrl: "partials/pushMenu/pushMenu.html",
         link: function (scope, element) {
 
+
+            scope.open = false;
+
+            /**
+             * Wir bilden ein jQLite Element aus dem Wurzelelement um unser Nav-Element zu finden
+             *
+             * @see https://docs.angularjs.org/api/ng/function/angular.element
+             */
+            var el = angular.element(element);
+
+            var nav = element.find('nav')[0];
+
             scope.toggleMenu = function(){
-                var body = angular.element('body');
-                classie.toggle(body, 'cbp-spmenu-push-toleft');
-                classie.toggle(element, 'cbp-spmenu-open');
+                scope.open = !scope.open;
             };
         }
         

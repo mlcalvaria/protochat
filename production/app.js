@@ -8,7 +8,6 @@
 //@prepros-append global/purr.js
 //@prepros-append global/404.controller.js
 //@prepros-append global/user.service.js
-//@prepros-append global/classie.js
 
 //@prepros-append start/start.module.js
 //@prepros-append start/start.controller.js
@@ -16,6 +15,7 @@
 //@prepros-append start/Chat.service.js
 //@prepros-append start/prompt.directive.js
 //@prepros-append start/historyScroll.directive.js
+//@prepros-append start/pushMenu.directive.js
 
 
 var app = angular.module('app', [
