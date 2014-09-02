@@ -971,7 +971,7 @@ startModule.factory('MessageService',function(User,toolkit){
 
 
 });
-startModule.factory('Chat',function($firebase){
+startModule.factory('Chat',function($firebase,purr){
 
     var ref = $firebase (new Firebase (FIREBASE + '/messages'));
 
@@ -996,6 +996,12 @@ startModule.factory('Chat',function($firebase){
         },
 
         postMessage: function(msg){
+
+            if(!msg.value){
+                purr.error('Leere Nachrichten können nicht gesendet werden.');
+                return;
+            }
+
             this.messages.$add(msg);
         }
 
