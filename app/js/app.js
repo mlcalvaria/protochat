@@ -946,15 +946,13 @@ startModule.controller('startCtrl',function($scope,Chat,MessageService){
 
     $scope.addMessage = function(){
 
-        var message = MessageService.createMessage($scope.message);
-
-        Chat.postMessage(message);
+        Chat.postMessage($scope.message);
 
         $scope.message = '';
     };
 
 });
-startModule.factory('MessageService',function(User,toolkit){
+startModule.factory('MessageService',function($sce,User,toolkit){
 
     // Nachrichten Objekt zum Senden an den Chat erzeugen
     function createMessage(message){
@@ -965,17 +963,42 @@ startModule.factory('MessageService',function(User,toolkit){
             timestamp: toolkit.getTime()
         };
 
-
         return message;
     }
 
+    function parseMessage(message){
+
+        var parsedMessage;
+
+        wrapUrl(message);
+
+        return message;
+
+    }
+
+    function wrapUrl(message){
+
+        var index = message.value.indexOf('http');
+
+        if(index != -1){
+
+            var endIndex = message.value.indexOf(' ',index) == -1 ? message.value.length : message.value.indexOf(' ',index);
+
+            var link = '<a href="' + message.value.substring(index,endIndex) + '">' + message.value.substring(index,endIndex) +  '</a>';
+
+            message.value = message.value.replace(message.value.substring(index,endIndex),link);
+
+        }
+
+    }
+
     return{
+        parseMessage: parseMessage,
         createMessage: createMessage
     }
 
-
 });
-startModule.factory('Chat',function($firebase,purr){
+startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
 
     var ref = $firebase (new Firebase (FIREBASE + '/messages'));
 
@@ -992,8 +1015,21 @@ startModule.factory('Chat',function($firebase,purr){
 
         loadMessages: function(){
 
-            //Daten per Service verfügbar machen
-            this.messages = messages;
+            var self = this;
+
+            messages.$loaded()
+                .then(function(){
+
+                    self.setUpWatcher();
+
+                    messages.forEach(function(item){
+                        var msg = angular.extend(item,{
+                            value: $sce.trustAsHtml(item.value)
+
+                        });
+                        self.messages.push(msg);
+                    });
+                });
 
             //Promise zurückliefern um resolve im Router zu ermöglichen
             return messages.$loaded();
@@ -1001,12 +1037,43 @@ startModule.factory('Chat',function($firebase,purr){
 
         postMessage: function(msg){
 
-            if(!msg.value){
+            if(!msg){
                 purr.error('Leere Nachrichten können nicht gesendet werden.');
                 return;
             }
 
-            this.messages.$add(msg);
+            msg = MessageService.parseMessage(MessageService.createMessage(msg));
+
+            messages.$add(msg);
+        },
+
+        setUpWatcher: function(){
+
+            var self = this;
+
+            messages.$watch(function(item){
+
+                switch(item.event){
+
+                    case 'child_added':
+
+                        var newMessage = messages.$getRecord(item.key);
+
+                        var msg = angular.extend(newMessage,{
+                            value: $sce.trustAsHtml(newMessage.value)
+
+                        });
+
+                        self.messages.push(msg);
+
+                        break;
+
+                }
+
+
+
+
+            });
         }
 
     }
