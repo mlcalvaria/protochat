@@ -7,7 +7,7 @@
 
                 <span class="usercolor">{{message.poster}}</span>
                 <span class="timestampcolor">{{message.timestamp}}</span>
-                <p class="line-break">{{message.value}}</p>
+                <div class="line-break" ng-bind-html="message.value"></div>
 
             </div>
        </div>
