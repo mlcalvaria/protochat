@@ -1,33 +1,56 @@
-/* General styles for all menus */
-
-.cbp-spmenu {
-  background: #d0d0d0;
-  position: fixed;
+::-webkit-input-placeholder {
+  color: #000000;
 }
 
-.cbp-spmenu h3 {
-  color: #afdefa;
-  font-size: 1.9em;
-  padding: 20px;
-  margin: 0;
-  font-weight: 300;
-  background: #0d77b6;
+:-moz-placeholder { /* Firefox 18- */
+  color: #000000;
 }
 
-.cbp-spmenu a {
+::-moz-placeholder {  /* Firefox 19+ */
+  color: #000000;
+}
+
+:-ms-input-placeholder {
+  color: #000000;
+}
+
+.master-class{
   color: #000;
   display: block;
   font-size: 1.1em;
   font-weight: 300;
+  border:none;
+  border-bottom: 1px solid #464646;
+  padding: 1em;
+  background: transparent;
+  width: 100%;
+
+
+  &:hover {
+    background: darkgray;
+  }
+
+  &:active {
+    background: #FFFFFF;
+    color: #000000;
+  }
+
 }
 
-.cbp-spmenu a:hover {
-  background: #b0b0b0;
+.cbp-spmenu {
+  background: #d0d0d0;
+  position: fixed;
+  @include vendor(box-shadow, 2px 2px 2px 2px #000);
+  border-bottom-left-radius: 5px;
 }
 
-.cbp-spmenu a:active {
-  background: #afdefa;
-  color: #47a3da;
+.cbp-spmenu h3 {
+  color: #FFFFFF;
+  font-size: 1.9em;
+  padding: 20px;
+  margin: 0;
+  font-weight: 300;
+  background: darkgrey;
 }
 
 /* Orientation-dependent styles for the content of the menu */
@@ -39,10 +62,6 @@
   z-index: 1000;
 }
 
-.cbp-spmenu-vertical a {
-  border-bottom: 1px solid #464646;
-  padding: 1em;
-}
 
 .cbp-spmenu-horizontal {
   width: 100%;
@@ -50,19 +69,6 @@
   left: 0;
   z-index: 1000;
   overflow: hidden;
-}
-
-.cbp-spmenu-horizontal h3 {
-  height: 100%;
-  width: 20%;
-  float: left;
-}
-
-.cbp-spmenu-horizontal a {
-  float: left;
-  width: 20%;
-  padding: 0.8em;
-  border-left: 1px solid #258ecd;
 }
 
 /* Vertical menu that slides from the left or right */
@@ -169,3 +175,130 @@
     left: 190px;
   }
 }
+
+.hover-settings{
+  &:hover{
+    .settings-icon{
+      color: #000000;
+      @include vendor(box-shadow, 1px 1px 1px #808080);
+      border-radius: 5px;
+    }
+  }
+
+  &:active{
+    .settings-icon{
+      color: #000000;
+      @include vendor(box-shadow, inset 0px 0px 5px #808080);
+
+    }
+  }
+}
+
+.settings-icon{
+  padding: 3px 5px 3px 5px;
+  cursor: pointer;
+  color: darkgray;
+}
+
+.round-menu{
+  border-top-left-radius: 5px;
+}
+
+//cool button
+
+/* btn */
+.menu {
+  cursor: pointer;
+  position: relative;
+  display:  inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 0px;
+}
+.menu span {
+  margin: 0 auto;
+  position: relative;
+  top: 12px;
+}
+.menu span:before, .menu span:after {
+  position: absolute;
+  content: '';
+}
+.menu span, .menu span:before, .menu span:after {
+  width: 25px;
+  height: 4px;
+  background-color: #000;
+  border-radius: 85px;
+  display: block;
+}
+.menu span:before {
+  margin-top: -7px;
+}
+.menu span:after {
+  margin-top: 7px;
+}
+/* --- btn --- */
+
+/* example 7 */
+.example7 span {
+  -webkit-transition-duration: 0s;
+  -webkit-transition-delay: .1s;
+}
+.example7:hover span {
+  background-color: rgba(0,0,0,0.0);
+  -webkit-transition-delay: .1s;
+}
+.example7 span:before {
+  -webkit-transition-property: margin, -webkit-transform;
+  -webkit-transition-duration: .1s;
+  -webkit-transition-delay: .1s, 0;
+  -webkit-transform-origin: 0% 100%;
+}
+.example7:hover span:before {
+  margin-top: 0;
+  -webkit-transform: rotate(22.5deg) skewX(22.5deg);
+  -webkit-transition-delay: 0, .1s;
+}
+.example7 span:after {
+  -webkit-transition-property: margin, -webkit-transform;
+  -webkit-transition-duration: .1s;
+  -webkit-transition-delay: .1s, 0;
+  -webkit-transform-origin: 0% 0%;
+}
+.example7:hover span:after {
+  margin-top: 0;
+  -webkit-transform: rotate(-22.5deg) skewX(-22.5deg);
+  -webkit-transition-delay: 0, .1s;
+}
+
+
+/* example 5 */
+.example5 span {
+  -webkit-transition-duration: 0s;
+  -webkit-transition-delay: .1s;
+}
+.example5:hover span {
+  background-color: rgba(0,0,0,0.0);
+  -webkit-transition-delay: .1s;
+}
+.example5 span:before {
+  -webkit-transition-property: margin, -webkit-transform;
+  -webkit-transition-duration: .1s;
+  -webkit-transition-delay: .1s, 0;
+}
+.example5:hover span:before {
+  margin-top: 0;
+  -webkit-transform: rotate(45deg);
+  -webkit-transition-delay: 0, .1s;
+}
+.example5 span:after {
+  -webkit-transition-property: margin, -webkit-transform;
+  -webkit-transition-duration: .1s;
+  -webkit-transition-delay: .1s, 0;
+}
+.example5:hover span:after {
+  margin-top: 0;
+  -webkit-transform: rotate(-45deg);
+  -webkit-transition-delay: 0, .1s;
+}
+
