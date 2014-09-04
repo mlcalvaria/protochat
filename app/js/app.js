@@ -909,13 +909,14 @@ purr.provider('purr',function(){
 globalModule.controller('404Ctrl',function(){
 
 });
-globalModule.service('User',function($q){
+globalModule.service('User',function($q,purr){
 
     var name;
 
     this.setName = function(newName){
         name = newName;
         localStorage['username'] = name;
+        purr.show("Neuer Nutzername: " + name);
     };
 
     this.getName = function(){
@@ -931,7 +932,13 @@ globalModule.service('User',function($q){
 
         var defer = $q.defer();
 
-        var name = window.prompt('Benutzername, bitte?');
+        var name;
+
+        // Wir müssen verhindern dass irgendein Idiot keinen Namen angibt
+        while(!name){
+            name = window.prompt('Benutzername, bitte?');
+        }
+
         this.setName(name);
 
         defer.resolve();
@@ -1142,7 +1149,7 @@ startModule.directive('historyScroll',function($timeout){
     }
 
 });
-startModule.directive('pushMenu',function(){
+startModule.directive('pushMenu',function(User){
        return{
         
         restrict: 'E',
@@ -1150,6 +1157,7 @@ startModule.directive('pushMenu',function(){
         templateUrl: "partials/pushMenu/pushMenu.html",
         link: function (scope, element) {
 
+            scope.newUsername = User.getName();
 
             scope.open = false;
 
@@ -1165,6 +1173,14 @@ startModule.directive('pushMenu',function(){
             scope.toggleMenu = function(){
                 scope.open = !scope.open;
             };
+
+            scope.setUsername = function(e){
+
+                if(e.keyCode == 13){
+                    User.setName(scope.newUsername);
+                }
+
+            }
         }
         
         

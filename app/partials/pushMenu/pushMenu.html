@@ -13,7 +13,9 @@
                 <span></span>
             </div>
         </h3>
-        <input type="text" class="master-class" placeholder="Username" value="{{name()}}" ng-keypress="localStorage['username'] = name;" >
-        <span class="master-class"></span>
+        <label>
+            Username
+            <input type="text" class="master-class" ng-model="newUsername" ng-keypress="setUsername($event)">
+        </label>
     </nav>
 </div>
