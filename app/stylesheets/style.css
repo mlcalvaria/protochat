@@ -830,20 +830,20 @@ ul {
   -ms-transition-duration: 0s;
   -o-transition-duration: 0s;
   transition-duration: 0s;
-  -webkit-transition-delay: 0.5s;
-  -moz-transition-delay: 0.5s;
-  -ms-transition-delay: 0.5s;
-  -o-transition-delay: 0.5s;
-  transition-delay: 0.5s;
+  -webkit-transition-delay: 0.1s;
+  -moz-transition-delay: 0.1s;
+  -ms-transition-delay: 0.1s;
+  -o-transition-delay: 0.1s;
+  transition-delay: 0.1s;
 }
 
 .example5:hover span {
   background-color: transparent;
-  -webkit-transition-delay: 0.5s;
-  -moz-transition-delay: 0.5s;
-  -ms-transition-delay: 0.5s;
-  -o-transition-delay: 0.5s;
-  transition-delay: 0.5s;
+  -webkit-transition-delay: 0.1s;
+  -moz-transition-delay: 0.1s;
+  -ms-transition-delay: 0.1s;
+  -o-transition-delay: 0.1s;
+  transition-delay: 0.1s;
 }
 
 .example5 span:before {
@@ -852,16 +852,16 @@ ul {
   -ms-transition-property: margin, transform;
   -o-transition-property: margin, transform;
   transition-property: margin, transform;
-  -webkit-transition-duration: 0.5s;
-  -moz-transition-duration: 0.5s;
-  -ms-transition-duration: 0.5s;
-  -o-transition-duration: 0.5s;
-  transition-duration: 0.5s;
-  -webkit-transition-delay: 0.5s, 0;
-  -moz-transition-delay: 0.5s, 0;
-  -ms-transition-delay: 0.5s, 0;
-  -o-transition-delay: 0.5s, 0;
-  transition-delay: 0.5s, 0;
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  -ms-transition-duration: 0.1s;
+  -o-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-delay: 0.1s, 0;
+  -moz-transition-delay: 0.1s, 0;
+  -ms-transition-delay: 0.1s, 0;
+  -o-transition-delay: 0.1s, 0;
+  transition-delay: 0.1s, 0;
 }
 
 .example5:hover span:before {
@@ -871,11 +871,11 @@ ul {
   -ms-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
-  -webkit-transition-delay: 0, 0.5s;
-  -moz-transition-delay: 0, 0.5s;
-  -ms-transition-delay: 0, 0.5s;
-  -o-transition-delay: 0, 0.5s;
-  transition-delay: 0, 0.5s;
+  -webkit-transition-delay: 0, 0.1s;
+  -moz-transition-delay: 0, 0.1s;
+  -ms-transition-delay: 0, 0.1s;
+  -o-transition-delay: 0, 0.1s;
+  transition-delay: 0, 0.1s;
 }
 
 .example5 span:after {
@@ -884,16 +884,16 @@ ul {
   -ms-transition-property: margin, transform;
   -o-transition-property: margin, transform;
   transition-property: margin, transform;
-  -webkit-transition-duration: 0.5s;
-  -moz-transition-duration: 0.5s;
-  -ms-transition-duration: 0.5s;
-  -o-transition-duration: 0.5s;
-  transition-duration: 0.5s;
-  -webkit-transition-delay: 0.5s, 0;
-  -moz-transition-delay: 0.5s, 0;
-  -ms-transition-delay: 0.5s, 0;
-  -o-transition-delay: 0.5s, 0;
-  transition-delay: 0.5s, 0;
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  -ms-transition-duration: 0.1s;
+  -o-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-delay: 0.1s, 0;
+  -moz-transition-delay: 0.1s, 0;
+  -ms-transition-delay: 0.1s, 0;
+  -o-transition-delay: 0.1s, 0;
+  transition-delay: 0.1s, 0;
 }
 
 .example5:hover span:after {
@@ -903,11 +903,11 @@ ul {
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
-  -webkit-transition-delay: 0, 0.5s;
-  -moz-transition-delay: 0, 0.5s;
-  -ms-transition-delay: 0, 0.5s;
-  -o-transition-delay: 0, 0.5s;
-  transition-delay: 0, 0.5s;
+  -webkit-transition-delay: 0, 0.1s;
+  -moz-transition-delay: 0, 0.1s;
+  -ms-transition-delay: 0, 0.1s;
+  -o-transition-delay: 0, 0.1s;
+  transition-delay: 0, 0.1s;
 }
 
 .historie {

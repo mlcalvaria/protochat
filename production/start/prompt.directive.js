@@ -12,8 +12,6 @@ startModule.directive('prompt',function(MessageService){
 
                if(e.which == 13 && !e.ctrlKey && !e.shiftKey){
 
-                    e.preventDefault();
-
                     scope.$apply(function(){
                         scope.addMessage();
                     });

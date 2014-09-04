@@ -1,4 +1,4 @@
-startModule.directive('pushMenu',function(User){
+startModule.directive('pushMenu',function(){
        return{
         
         restrict: 'E',
@@ -21,11 +21,6 @@ startModule.directive('pushMenu',function(User){
             scope.toggleMenu = function(){
                 scope.open = !scope.open;
             };
-
-            scope.name = function(){
-                return User.getName();
-            };
-
         }
         
         
