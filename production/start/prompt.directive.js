@@ -10,14 +10,10 @@ startModule.directive('prompt',function(MessageService){
 
             function postOnEnter(e){
 
-                var message = MessageService.createMessage();
-
-                if(e.which == 13 && e.ctrlKey){
-
-                    e.preventDefault();
+               if(e.which == 13 && !e.ctrlKey && !e.shiftKey){
 
                     scope.$apply(function(){
-                        scope.addMessage(message);
+                        scope.addMessage();
                     });
                 }
 

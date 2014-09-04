@@ -20,6 +20,7 @@
 
 var app = angular.module('app', [
     'ngRoute',
+    'ngSanitize',
     'global',
     'start',
     'purr',
@@ -1023,10 +1024,11 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
                     self.setUpWatcher();
 
                     messages.forEach(function(item){
-                        var msg = angular.extend(item,{
-                            value: $sce.trustAsHtml(item.value)
 
+                        var msg = angular.extend(item,{
+                            value: item.value
                         });
+
                         self.messages.push(msg);
                     });
                 });
@@ -1060,8 +1062,7 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
                         var newMessage = messages.$getRecord(item.key);
 
                         var msg = angular.extend(newMessage,{
-                            value: $sce.trustAsHtml(newMessage.value)
-
+                            value: newMessage.value
                         });
 
                         self.messages.push(msg);
@@ -1091,14 +1092,10 @@ startModule.directive('prompt',function(MessageService){
 
             function postOnEnter(e){
 
-                var message = MessageService.createMessage();
-
-                if(e.which == 13 && e.ctrlKey){
-
-                    e.preventDefault();
+               if(e.which == 13 && !e.ctrlKey && !e.shiftKey){
 
                     scope.$apply(function(){
-                        scope.addMessage(message);
+                        scope.addMessage();
                     });
                 }
 

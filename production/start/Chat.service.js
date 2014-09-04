@@ -23,10 +23,11 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
                     self.setUpWatcher();
 
                     messages.forEach(function(item){
-                        var msg = angular.extend(item,{
-                            value: $sce.trustAsHtml(item.value)
 
+                        var msg = angular.extend(item,{
+                            value: item.value
                         });
+
                         self.messages.push(msg);
                     });
                 });
@@ -60,8 +61,7 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
                         var newMessage = messages.$getRecord(item.key);
 
                         var msg = angular.extend(newMessage,{
-                            value: $sce.trustAsHtml(newMessage.value)
-
+                            value: newMessage.value
                         });
 
                         self.messages.push(msg);
