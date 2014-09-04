@@ -3,13 +3,13 @@ startModule.factory('MessageService',function($sce,User,toolkit){
     // Nachrichten Objekt zum Senden an den Chat erzeugen
     function createMessage(message){
 
-        var message = {
-            poster: User.getName(),
-            value: message,
+        var messageObject = {
+            poster: message.poster || User.getName(),
+            value: message.value || message,
             timestamp: toolkit.getTime()
         };
 
-        return message;
+        return messageObject;
     }
 
     function parseMessage(message){

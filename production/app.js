@@ -17,11 +17,15 @@
 //@prepros-append start/historyScroll.directive.js
 //@prepros-append start/pushMenu.directive.js
 
+//@prepros-append bot/bot.module.js
+//@prepros-append bot/bot.service.js
+
 
 var app = angular.module('app', [
     'ngRoute',
     'ngSanitize',
     'global',
+    'bot',
     'start',
     'purr',
     'firebase'
