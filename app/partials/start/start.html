@@ -5,7 +5,7 @@
        <div class="historie" history-scroll>
             <div ng-repeat="message in messages" class=" user-hover">
 
-                <span class="usercolor">{{message.poster}}</span>
+                <span class="usercolor" ng-bind-html="message.poster"></span>
                 <span class="timestampcolor">{{message.timestamp}}</span>
                 <div class="line-break" ng-bind-html="message.value"></div>
 

@@ -1203,7 +1203,7 @@ botModule.service('Bot',function(Chat){
 
     var iRobot = this;
 
-    this.name = 'Protobot';
+    this.name = '<span class="fa fa-bug"></span>';
 
     this.postMessage = function(content){
         Chat.postMessage({
