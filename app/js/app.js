@@ -1092,7 +1092,7 @@ startModule.directive('prompt',function(MessageService){
 
             function postOnEnter(e){
 
-                if(e.which == 13 && e.ctrlKey){
+               if(e.which == 13 && !e.ctrlKey && !e.shiftKey){
 
                     scope.$apply(function(){
                         scope.addMessage();
