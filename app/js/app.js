@@ -18,10 +18,14 @@
 
 
 
+
+
+
 var app = angular.module('app', [
     'ngRoute',
     'ngSanitize',
     'global',
+    'bot',
     'start',
     'purr',
     'firebase'
@@ -914,6 +918,9 @@ globalModule.service('User',function($q){
     var name;
 
     this.setName = function(newName){
+
+        var oldName = name;
+
         name = newName;
         localStorage['username'] = name;
     };
@@ -931,7 +938,13 @@ globalModule.service('User',function($q){
 
         var defer = $q.defer();
 
-        var name = window.prompt('Benutzername, bitte?');
+        var name;
+
+        // Wir müssen verhindern dass irgendein Idiot keinen Namen angibt
+        while(!name){
+            name = window.prompt('Benutzername, bitte?');
+        }
+
         this.setName(name);
 
         defer.resolve();
@@ -958,13 +971,13 @@ startModule.factory('MessageService',function($sce,User,toolkit){
     // Nachrichten Objekt zum Senden an den Chat erzeugen
     function createMessage(message){
 
-        var message = {
-            poster: User.getName(),
-            value: message,
+        var messageObject = {
+            poster: message.poster || User.getName(),
+            value: message.value || message,
             timestamp: toolkit.getTime()
         };
 
-        return message;
+        return messageObject;
     }
 
     function parseMessage(message){
@@ -1142,7 +1155,7 @@ startModule.directive('historyScroll',function($timeout){
     }
 
 });
-startModule.directive('pushMenu',function(){
+startModule.directive('pushMenu',function(User,purr,Bot){
        return{
         
         restrict: 'E',
@@ -1150,6 +1163,7 @@ startModule.directive('pushMenu',function(){
         templateUrl: "partials/pushMenu/pushMenu.html",
         link: function (scope, element) {
 
+            scope.newUsername = User.getName();
 
             scope.open = false;
 
@@ -1165,10 +1179,37 @@ startModule.directive('pushMenu',function(){
             scope.toggleMenu = function(){
                 scope.open = !scope.open;
             };
+
+            scope.setUsername = function(e){
+
+                var oldName = User.getName();
+
+                if(e.keyCode == 13){
+                    User.setName(scope.newUsername);
+                    Bot.postMessage(oldName + "'s neuer Nutzername: " + scope.newUsername);
+                    purr.success("Neuer Nutzername: " + scope.newUsername);
+                }
+
+            }
         }
         
         
     }
     
     
+});
+var botModule = angular.module('bot',[]);
+botModule.service('Bot',function(Chat){
+
+    var iRobot = this;
+
+    this.name = 'Protobot';
+
+    this.postMessage = function(content){
+        Chat.postMessage({
+            value: content,
+            poster: iRobot.name
+        });
+    };
+
 });

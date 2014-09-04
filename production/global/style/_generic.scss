@@ -54,5 +54,6 @@ ul{
 }
 
 .fa-spin{
-
+  -webkit-animation: fa-spin !important;
+  animation: fa-spin !important;
 }

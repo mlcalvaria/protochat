@@ -3,6 +3,9 @@ globalModule.service('User',function($q){
     var name;
 
     this.setName = function(newName){
+
+        var oldName = name;
+
         name = newName;
         localStorage['username'] = name;
     };
@@ -20,7 +23,13 @@ globalModule.service('User',function($q){
 
         var defer = $q.defer();
 
-        var name = window.prompt('Benutzername, bitte?');
+        var name;
+
+        // Wir müssen verhindern dass irgendein Idiot keinen Namen angibt
+        while(!name){
+            name = window.prompt('Benutzername, bitte?');
+        }
+
         this.setName(name);
 
         defer.resolve();

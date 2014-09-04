@@ -1,4 +1,4 @@
-startModule.directive('pushMenu',function(){
+startModule.directive('pushMenu',function(User,purr,Bot){
        return{
         
         restrict: 'E',
@@ -6,6 +6,7 @@ startModule.directive('pushMenu',function(){
         templateUrl: "partials/pushMenu/pushMenu.html",
         link: function (scope, element) {
 
+            scope.newUsername = User.getName();
 
             scope.open = false;
 
@@ -21,6 +22,18 @@ startModule.directive('pushMenu',function(){
             scope.toggleMenu = function(){
                 scope.open = !scope.open;
             };
+
+            scope.setUsername = function(e){
+
+                var oldName = User.getName();
+
+                if(e.keyCode == 13){
+                    User.setName(scope.newUsername);
+                    Bot.postMessage(oldName + "'s neuer Nutzername: " + scope.newUsername);
+                    purr.success("Neuer Nutzername: " + scope.newUsername);
+                }
+
+            }
         }
         
         

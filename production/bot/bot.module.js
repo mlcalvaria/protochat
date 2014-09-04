@@ -1,0 +1,1 @@
+var botModule = angular.module('bot',[]);
