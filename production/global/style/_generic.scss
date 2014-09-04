@@ -22,11 +22,15 @@ body {
   min-height: 100%;
   background: #e8e8e8;
   padding-top: 1px;
-
+  overflow-y: hidden;
 }
 
 a{
   text-decoration: none;
+
+  &:visited{
+    color: #870081;
+  }
 }
 
 h2{

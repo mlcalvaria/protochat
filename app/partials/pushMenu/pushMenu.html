@@ -1,0 +1,19 @@
+<div class="menu-container">
+
+    <div class="msgContainer top-right hover-settings">
+        <div class="menu example7" ng-click="toggleMenu()">
+            <span></span>
+        </div>
+        <!--<span class="fa fa-bars settings-icon fa fa-2x" ng-click="toggleMenu()"></span>-->
+    </div>
+
+    <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right round-menu" ng-class="{'cbp-spmenu-open': open}">
+        <h3 class="round-menu">
+            <div class="menu example5" ng-click="toggleMenu()">
+                <span></span>
+            </div>
+        </h3>
+        <input type="text" class="master-class" placeholder="Username" value="{{name()}}" ng-keypress="localStorage['username'] = name;" >
+        <span class="master-class"></span>
+    </nav>
+</div>

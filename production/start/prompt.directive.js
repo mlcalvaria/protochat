@@ -1,4 +1,4 @@
-startModule.directive('prompt',function(MessageService,purr){
+startModule.directive('prompt',function(MessageService){
 
     return{
 
@@ -6,23 +6,20 @@ startModule.directive('prompt',function(MessageService,purr){
         scope: false,
         link: function(scope,element,attrs){
 
-            // Nachrichten durch Enter senden
+            element.bind('keydown',postOnEnter);
+
             function postOnEnter(e){
 
-                var message = MessageService.createMessage();
-
-                if(e.which == 13 && e.ctrlKey){
+               if(e.which == 13 && !e.ctrlKey && !e.shiftKey){
 
                     e.preventDefault();
 
                     scope.$apply(function(){
-                        scope.addMessage(message);
+                        scope.addMessage();
                     });
                 }
 
             }
-
-            element.bind('keydown',postOnEnter);
 
         }
 

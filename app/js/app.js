@@ -16,6 +16,8 @@
 
 
 
+
+
 var app = angular.module('app', [
     'ngRoute',
     'global',
@@ -944,15 +946,13 @@ startModule.controller('startCtrl',function($scope,Chat,MessageService){
 
     $scope.addMessage = function(){
 
-        var message = MessageService.createMessage($scope.message);
-
-        Chat.postMessage(message);
+        Chat.postMessage($scope.message);
 
         $scope.message = '';
     };
 
 });
-startModule.factory('MessageService',function(User,toolkit){
+startModule.factory('MessageService',function($sce,User,toolkit){
 
     // Nachrichten Objekt zum Senden an den Chat erzeugen
     function createMessage(message){
@@ -963,17 +963,42 @@ startModule.factory('MessageService',function(User,toolkit){
             timestamp: toolkit.getTime()
         };
 
-
         return message;
     }
 
+    function parseMessage(message){
+
+        var parsedMessage;
+
+        wrapUrl(message);
+
+        return message;
+
+    }
+
+    function wrapUrl(message){
+
+        var index = message.value.indexOf('http');
+
+        if(index != -1){
+
+            var endIndex = message.value.indexOf(' ',index) == -1 ? message.value.length : message.value.indexOf(' ',index);
+
+            var link = '<a href="' + message.value.substring(index,endIndex) + '">' + message.value.substring(index,endIndex) +  '</a>';
+
+            message.value = message.value.replace(message.value.substring(index,endIndex),link);
+
+        }
+
+    }
+
     return{
+        parseMessage: parseMessage,
         createMessage: createMessage
     }
 
-
 });
-startModule.factory('Chat',function($firebase){
+startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
 
     var ref = $firebase (new Firebase (FIREBASE + '/messages'));
 
@@ -990,21 +1015,71 @@ startModule.factory('Chat',function($firebase){
 
         loadMessages: function(){
 
-            //Daten per Service verfügbar machen
-            this.messages = messages;
+            var self = this;
+
+            messages.$loaded()
+                .then(function(){
+
+                    self.setUpWatcher();
+
+                    messages.forEach(function(item){
+                        var msg = angular.extend(item,{
+                            value: $sce.trustAsHtml(item.value)
+
+                        });
+                        self.messages.push(msg);
+                    });
+                });
 
             //Promise zurückliefern um resolve im Router zu ermöglichen
             return messages.$loaded();
         },
 
         postMessage: function(msg){
-            this.messages.$add(msg);
+
+            if(!msg){
+                purr.error('Leere Nachrichten können nicht gesendet werden.');
+                return;
+            }
+
+            msg = MessageService.parseMessage(MessageService.createMessage(msg));
+
+            messages.$add(msg);
+        },
+
+        setUpWatcher: function(){
+
+            var self = this;
+
+            messages.$watch(function(item){
+
+                switch(item.event){
+
+                    case 'child_added':
+
+                        var newMessage = messages.$getRecord(item.key);
+
+                        var msg = angular.extend(newMessage,{
+                            value: $sce.trustAsHtml(newMessage.value)
+
+                        });
+
+                        self.messages.push(msg);
+
+                        break;
+
+                }
+
+
+
+
+            });
         }
 
     }
 
 });
-startModule.directive('prompt',function(MessageService,purr){
+startModule.directive('prompt',function(MessageService){
 
     return{
 
@@ -1012,23 +1087,20 @@ startModule.directive('prompt',function(MessageService,purr){
         scope: false,
         link: function(scope,element,attrs){
 
-            // Nachrichten durch Enter senden
+            element.bind('keydown',postOnEnter);
+
             function postOnEnter(e){
 
-                var message = MessageService.createMessage();
-
-                if(e.which == 13 && e.ctrlKey){
+               if(e.which == 13 && !e.ctrlKey && !e.shiftKey){
 
                     e.preventDefault();
 
                     scope.$apply(function(){
-                        scope.addMessage(message);
+                        scope.addMessage();
                     });
                 }
 
             }
-
-            element.bind('keydown',postOnEnter);
 
         }
 
@@ -1070,4 +1142,39 @@ startModule.directive('historyScroll',function($timeout){
         }
     }
 
+});
+startModule.directive('pushMenu',function(User){
+       return{
+        
+        restrict: 'E',
+        scope: {},
+        templateUrl: "partials/pushMenu/pushMenu.html",
+        link: function (scope, element) {
+
+
+            scope.open = false;
+
+            /**
+             * Wir bilden ein jQLite Element aus dem Wurzelelement um unser Nav-Element zu finden
+             *
+             * @see https://docs.angularjs.org/api/ng/function/angular.element
+             */
+            var el = angular.element(element);
+
+            var nav = element.find('nav')[0];
+
+            scope.toggleMenu = function(){
+                scope.open = !scope.open;
+            };
+
+            scope.name = function(){
+                return User.getName();
+            };
+
+        }
+        
+        
+    }
+    
+    
 });
