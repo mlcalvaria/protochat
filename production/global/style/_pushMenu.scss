@@ -292,42 +292,42 @@
 .example5 span {
   @include vendor(transition-duration, 0s);
   //-webkit-transition-duration: 0s;
-  @include vendor(transition-delay, .5s);
-//  -webkit-transition-delay: .5s;
+  @include vendor(transition-delay, .1s);
+//  -webkit-transition-delay: .1s;
 }
 .example5:hover span {
   background-color: transparent;
-  @include vendor(transition-delay, .5s);
-  //-webkit-transition-delay: .5s;
+  @include vendor(transition-delay, .1s);
+  //-webkit-transition-delay: .1s;
 }
 .example5 span:before {
   @include vendor(transition-property, margin, transform);
   //-webkit-transition-property: margin, -webkit-transform;
-  @include vendor(transition-duration, .5s);
-  //-webkit-transition-duration: .5s;
-  @include vendor(transition-delay, .5s, 0);
-  //-webkit-transition-delay: .5s, 0;
+  @include vendor(transition-duration, .1s);
+  //-webkit-transition-duration: .1s;
+  @include vendor(transition-delay, .1s, 0);
+  //-webkit-transition-delay: .1s, 0;
 }
 .example5:hover span:before {
   margin-top: 0;
   @include vendor(transform, rotate(45deg));
   //-webkit-transform: rotate(45deg);
-  @include vendor(transition-delay, 0, .5s);
-//  -webkit-transition-delay: 0, .5s;
+  @include vendor(transition-delay, 0, .1s);
+//  -webkit-transition-delay: 0, .1s;
 }
 .example5 span:after {
   @include vendor(transition-property, margin, transform);
 //  -webkit-transition-property: margin, -webkit-transform;
-  @include vendor(transition-duration, .5s);
-//  -webkit-transition-duration: .5s;
-  @include vendor(transition-delay, .5s, 0);
-//  -webkit-transition-delay: .5s, 0;
+  @include vendor(transition-duration, .1s);
+//  -webkit-transition-duration: .1s;
+  @include vendor(transition-delay, .1s, 0);
+//  -webkit-transition-delay: .1s, 0;
 }
 .example5:hover span:after {
   margin-top: 0;
   @include vendor(transform, rotate(-45deg));
 //  -webkit-transform: rotate(-45deg);
-  @include vendor(transition-delay, 0, .5s);
-//  -webkit-transition-delay: 0, .5s;
+  @include vendor(transition-delay, 0, .1s);
+//  -webkit-transition-delay: 0, .1s;
 }
 
