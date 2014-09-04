@@ -913,14 +913,16 @@ purr.provider('purr',function(){
 globalModule.controller('404Ctrl',function(){
 
 });
-globalModule.service('User',function($q,purr){
+globalModule.service('User',function($q){
 
     var name;
 
     this.setName = function(newName){
+
+        var oldName = name;
+
         name = newName;
         localStorage['username'] = name;
-        purr.show("Neuer Nutzername: " + name);
     };
 
     this.getName = function(){
@@ -1153,7 +1155,7 @@ startModule.directive('historyScroll',function($timeout){
     }
 
 });
-startModule.directive('pushMenu',function(User){
+startModule.directive('pushMenu',function(User,purr,Bot){
        return{
         
         restrict: 'E',
@@ -1180,8 +1182,12 @@ startModule.directive('pushMenu',function(User){
 
             scope.setUsername = function(e){
 
+                var oldName = User.getName();
+
                 if(e.keyCode == 13){
                     User.setName(scope.newUsername);
+                    Bot.postMessage(oldName + "'s neuer Nutzername: " + scope.newUsername);
+                    purr.success("Neuer Nutzername: " + scope.newUsername);
                 }
 
             }

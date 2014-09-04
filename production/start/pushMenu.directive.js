@@ -1,4 +1,4 @@
-startModule.directive('pushMenu',function(User){
+startModule.directive('pushMenu',function(User,purr,Bot){
        return{
         
         restrict: 'E',
@@ -25,8 +25,12 @@ startModule.directive('pushMenu',function(User){
 
             scope.setUsername = function(e){
 
+                var oldName = User.getName();
+
                 if(e.keyCode == 13){
                     User.setName(scope.newUsername);
+                    Bot.postMessage(oldName + "'s neuer Nutzername: " + scope.newUsername);
+                    purr.success("Neuer Nutzername: " + scope.newUsername);
                 }
 
             }
