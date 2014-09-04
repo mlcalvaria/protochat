@@ -18,10 +18,14 @@
 
 
 
+
+
+
 var app = angular.module('app', [
     'ngRoute',
     'ngSanitize',
     'global',
+    'bot',
     'start',
     'purr',
     'firebase'
@@ -909,14 +913,16 @@ purr.provider('purr',function(){
 globalModule.controller('404Ctrl',function(){
 
 });
-globalModule.service('User',function($q,purr){
+globalModule.service('User',function($q){
 
     var name;
 
     this.setName = function(newName){
+
+        var oldName = name;
+
         name = newName;
         localStorage['username'] = name;
-        purr.show("Neuer Nutzername: " + name);
     };
 
     this.getName = function(){
@@ -965,13 +971,13 @@ startModule.factory('MessageService',function($sce,User,toolkit){
     // Nachrichten Objekt zum Senden an den Chat erzeugen
     function createMessage(message){
 
-        var message = {
-            poster: User.getName(),
-            value: message,
+        var messageObject = {
+            poster: message.poster || User.getName(),
+            value: message.value || message,
             timestamp: toolkit.getTime()
         };
 
-        return message;
+        return messageObject;
     }
 
     function parseMessage(message){
@@ -1149,7 +1155,7 @@ startModule.directive('historyScroll',function($timeout){
     }
 
 });
-startModule.directive('pushMenu',function(User){
+startModule.directive('pushMenu',function(User,purr,Bot){
        return{
         
         restrict: 'E',
@@ -1176,8 +1182,12 @@ startModule.directive('pushMenu',function(User){
 
             scope.setUsername = function(e){
 
+                var oldName = User.getName();
+
                 if(e.keyCode == 13){
                     User.setName(scope.newUsername);
+                    Bot.postMessage(oldName + "'s neuer Nutzername: " + scope.newUsername);
+                    purr.success("Neuer Nutzername: " + scope.newUsername);
                 }
 
             }
@@ -1187,4 +1197,19 @@ startModule.directive('pushMenu',function(User){
     }
     
     
+});
+var botModule = angular.module('bot',[]);
+botModule.service('Bot',function(Chat){
+
+    var iRobot = this;
+
+    this.name = 'Protobot';
+
+    this.postMessage = function(content){
+        Chat.postMessage({
+            value: content,
+            poster: iRobot.name
+        });
+    };
+
 });

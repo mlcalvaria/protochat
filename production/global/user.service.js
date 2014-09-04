@@ -1,11 +1,13 @@
-globalModule.service('User',function($q,purr){
+globalModule.service('User',function($q){
 
     var name;
 
     this.setName = function(newName){
+
+        var oldName = name;
+
         name = newName;
         localStorage['username'] = name;
-        purr.show("Neuer Nutzername: " + name);
     };
 
     this.getName = function(){
