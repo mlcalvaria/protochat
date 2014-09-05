@@ -33,7 +33,19 @@ startModule.directive('pushMenu',function(User,purr,Bot){
                     purr.success("Neuer Nutzername: " + scope.newUsername);
                 }
 
-            }
+            };
+
+            var x = element.find('nav');
+
+            x.bind('keydown',function(e){
+                console.log(e.keyCode);
+                if(e.keyCode == 27){
+                    scope.$apply(function () {
+                        scope.toggleMenu();
+                    });
+                }
+            });
+
         }
         
         

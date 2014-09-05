@@ -32,7 +32,7 @@ startModule.directive('unreadMessages',function(Chat,User){
                         unreadMessages = 0;
                         scope.title = 'Protochat';
                     }
-                },true);
+                });
 
             scope.$watch(function(){return User.hasScrolled},
                 function () {
@@ -40,7 +40,7 @@ startModule.directive('unreadMessages',function(Chat,User){
                         unreadMessages = 0;
                         scope.title = 'Protochat';
                     }
-                },true);
+                });
 
         }
     }

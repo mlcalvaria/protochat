@@ -7,15 +7,12 @@
         <!--<span class="fa fa-bars settings-icon fa fa-2x" ng-click="toggleMenu()"></span>-->
     </div>
 
-    <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right round-menu" ng-class="{'cbp-spmenu-open': open}">
+    <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right round-menu" ng-class="{'cbp-spmenu-open': open}" tabindex="9001">
         <h3 class="round-menu">
             <div class="menu example5" ng-click="toggleMenu()">
                 <span></span>
             </div>
         </h3>
-        <label>
-            Username
             <input type="text" class="master-class" ng-model="newUsername" ng-keypress="setUsername($event)">
-        </label>
     </nav>
 </div>
