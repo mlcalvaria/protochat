@@ -1,36 +1,34 @@
-startModule.directive('unreadMessages',function(Chat,User,$document){
+startModule.directive('unreadMessages',function(Chat,User){
 
     return{
         restrict: 'A',
         link: function(scope,element,attrs) {
 
             var unreadMessages = 0,
-                doc = angular.element(window);
+                doc = angular.element(window),
+                isFocused;
 
             scope.title = 'Protochat';
 
-              /*doc.bind('focus',function(){
-                scope.$apply(function(){
-                    unreadMessages = 0;
-                    scope.title = 'Protochat';
-                });
-            });*/
+            doc.bind('focus', function () {
+                isFocused = true
+            });
+
+            doc.bind('blur', function () {
+                isFocused = false
+            });
 
             scope.$watch(function () {return Chat.messages;},
                 function () {
                     if(!document.hasFocus() || User.hasScrolled){
                         ++unreadMessages;
                         scope.title = '(' + unreadMessages + ') Protochat';
-                    } else{
-                        unreadMessages = 0;
-                        scope.title = 'Protochat';
                     }
                 },true);
 
-            scope.$watch(document.hasFocus(),
+            scope.$watch(function(){return isFocused},
                 function () {
-                    console.log('focused');
-                    if(document.hasFocus()){
+                    if(document.hasFocus() && !User.hasScrolled){
                         unreadMessages = 0;
                         scope.title = 'Protochat';
                     }
@@ -38,8 +36,6 @@ startModule.directive('unreadMessages',function(Chat,User,$document){
 
             scope.$watch(function(){return User.hasScrolled},
                 function () {
-                    
-                    console.log('scrolled');
                     if (!User.hasScrolled){
                         unreadMessages = 0;
                         scope.title = 'Protochat';

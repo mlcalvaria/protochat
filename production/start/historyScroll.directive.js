@@ -4,7 +4,6 @@ startModule.directive('historyScroll',function($timeout,Chat,User){
         link: function(scope,element,attrs){
 
             // Wird benutzt um ein automatisches Scrollen zu verhindern wenn manuell nach oben gescrollt wurde
-            var isScrolled = false;
 
             element.bind('scroll',function(){
 
@@ -12,13 +11,13 @@ startModule.directive('historyScroll',function($timeout,Chat,User){
                 // Todo: Herausfinden wieso das zum Geier so ist
 
                 if((element[0].scrollHeight - element[0].scrollTop) - element[0].clientHeight < 5){
-                    User.hasScrolled = false;
-                    console.log(User.hasScrolled);
-                    isScrolled = false;
+                    scope.$apply(function(){
+                        User.hasScrolled = false;
+                    });
                 } else{
-                    User.hasScrolled = true;
-                    console.log(User.hasScrolled);
-                    isScrolled = true;
+                    scope.$apply(function(){
+                        User.hasScrolled = true;
+                    });
                 }
 
             });
@@ -30,7 +29,7 @@ startModule.directive('historyScroll',function($timeout,Chat,User){
              * Ein $watch auf die Höhe des Elementes funktioniert da diese sich aktualsiert sobald die eigentliche Nachricht gebunden wird
              */
             scope.$watch(function(){return element[0].scrollHeight;},function(){
-                    if(!isScrolled){
+                    if(!User.hasScrolled){
                         element[0].scrollTop = element[0].scrollHeight;
                     }
             },true);
