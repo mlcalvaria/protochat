@@ -1,4 +1,4 @@
-startModule.directive('historyScroll',function($timeout,Chat){
+startModule.directive('historyScroll',function($timeout,Chat,User){
     return{
         restrict: 'A',
         link: function(scope,element,attrs){
@@ -12,8 +12,12 @@ startModule.directive('historyScroll',function($timeout,Chat){
                 // Todo: Herausfinden wieso das zum Geier so ist
 
                 if((element[0].scrollHeight - element[0].scrollTop) - element[0].clientHeight < 5){
+                    User.hasScrolled = false;
+                    console.log(User.hasScrolled);
                     isScrolled = false;
                 } else{
+                    User.hasScrolled = true;
+                    console.log(User.hasScrolled);
                     isScrolled = true;
                 }
 
@@ -28,12 +32,8 @@ startModule.directive('historyScroll',function($timeout,Chat){
             scope.$watch(function(){return element[0].scrollHeight;},function(){
                     if(!isScrolled){
                         element[0].scrollTop = element[0].scrollHeight;
-                        Chat.unreadMessages = 0;
-                    } else{
-                        Chat.unreadMessages++;
                     }
             },true);
-
         }
     }
 

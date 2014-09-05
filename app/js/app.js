@@ -952,7 +952,10 @@ globalModule.service('User',function($q){
         defer.resolve();
 
         return defer.promise;
-    }
+    };
+
+    this.hasScrolled = false;
+
 
 });
 var startModule = angular.module('start',[]);
@@ -1027,7 +1030,6 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
 
     return{
 
-        unreadMessages: 0,
         messages: [],
 
         loadMessages: function(){
@@ -1083,10 +1085,6 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
 
                         self.messages.push(msg);
 
-                        if(!document.hasFocus()){
-                            self.unreadMessages += 1;
-                        }
-
                         break;
 
                 }
@@ -1123,7 +1121,7 @@ startModule.directive('prompt',function(MessageService){
     }
 
 });
-startModule.directive('historyScroll',function($timeout,Chat){
+startModule.directive('historyScroll',function($timeout,Chat,User){
     return{
         restrict: 'A',
         link: function(scope,element,attrs){
@@ -1137,8 +1135,12 @@ startModule.directive('historyScroll',function($timeout,Chat){
                 // Todo: Herausfinden wieso das zum Geier so ist
 
                 if((element[0].scrollHeight - element[0].scrollTop) - element[0].clientHeight < 5){
+                    User.hasScrolled = false;
+                    console.log(User.hasScrolled);
                     isScrolled = false;
                 } else{
+                    User.hasScrolled = true;
+                    console.log(User.hasScrolled);
                     isScrolled = true;
                 }
 
@@ -1153,12 +1155,8 @@ startModule.directive('historyScroll',function($timeout,Chat){
             scope.$watch(function(){return element[0].scrollHeight;},function(){
                     if(!isScrolled){
                         element[0].scrollTop = element[0].scrollHeight;
-                        Chat.unreadMessages = 0;
-                    } else{
-                        Chat.unreadMessages++;
                     }
             },true);
-
         }
     }
 
@@ -1206,32 +1204,53 @@ startModule.directive('pushMenu',function(User,purr,Bot){
     
     
 });
-startModule.directive('unreadMessages',function(Chat,$document){
+startModule.directive('unreadMessages',function(Chat,User,$document){
 
     return{
         restrict: 'A',
         link: function(scope,element,attrs) {
 
-            var doc = angular.element(window);
+            var unreadMessages = 0,
+                doc = angular.element(window);
 
             scope.title = 'Protochat';
 
-            doc.bind('focus',function(){
+              /*doc.bind('focus',function(){
                 scope.$apply(function(){
-                    Chat.unreadMessages = 0;
+                    unreadMessages = 0;
                     scope.title = 'Protochat';
                 });
-            });
+            });*/
 
-            scope.$watch(function () {
-                return Chat.unreadMessages;
-            }, function () {
-                if(Chat.unreadMessages){
-                    scope.title = '(' + Chat.unreadMessages + ') Protochat';
-                } else{
-                    scope.title = 'Protochat'
-                }
-            });
+            scope.$watch(function () {return Chat.messages;},
+                function () {
+                    if(!document.hasFocus() || User.hasScrolled){
+                        ++unreadMessages;
+                        scope.title = '(' + unreadMessages + ') Protochat';
+                    } else{
+                        unreadMessages = 0;
+                        scope.title = 'Protochat';
+                    }
+                },true);
+
+            scope.$watch(document.hasFocus(),
+                function () {
+                    console.log('focused');
+                    if(document.hasFocus()){
+                        unreadMessages = 0;
+                        scope.title = 'Protochat';
+                    }
+                },true);
+
+            scope.$watch(function(){return User.hasScrolled},
+                function () {
+                    
+                    console.log('scrolled');
+                    if (!User.hasScrolled){
+                        unreadMessages = 0;
+                        scope.title = 'Protochat';
+                    }
+                },true);
 
         }
     }

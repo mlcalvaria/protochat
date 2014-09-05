@@ -35,6 +35,9 @@ globalModule.service('User',function($q){
         defer.resolve();
 
         return defer.promise;
-    }
+    };
+
+    this.hasScrolled = false;
+
 
 });
