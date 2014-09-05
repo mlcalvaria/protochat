@@ -16,6 +16,8 @@
 //@prepros-append start/prompt.directive.js
 //@prepros-append start/historyScroll.directive.js
 //@prepros-append start/pushMenu.directive.js
+//@prepros-append start/unreadMessages.directive.js
+
 
 //@prepros-append bot/bot.module.js
 //@prepros-append bot/bot.service.js

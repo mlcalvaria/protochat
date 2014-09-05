@@ -11,6 +11,7 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
 
     return{
 
+        unreadMessages: 0,
         messages: [],
 
         loadMessages: function(){
@@ -66,12 +67,13 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
 
                         self.messages.push(msg);
 
+                        if(!document.hasFocus()){
+                            self.unreadMessages += 1;
+                        }
+
                         break;
 
                 }
-
-
-
 
             });
         }

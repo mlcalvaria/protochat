@@ -21,6 +21,8 @@
 
 
 
+
+
 var app = angular.module('app', [
     'ngRoute',
     'ngSanitize',
@@ -1025,6 +1027,7 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
 
     return{
 
+        unreadMessages: 0,
         messages: [],
 
         loadMessages: function(){
@@ -1080,12 +1083,13 @@ startModule.factory('Chat',function($firebase,$sce,purr,MessageService){
 
                         self.messages.push(msg);
 
+                        if(!document.hasFocus()){
+                            self.unreadMessages += 1;
+                        }
+
                         break;
 
                 }
-
-
-
 
             });
         }
@@ -1119,7 +1123,7 @@ startModule.directive('prompt',function(MessageService){
     }
 
 });
-startModule.directive('historyScroll',function($timeout){
+startModule.directive('historyScroll',function($timeout,Chat){
     return{
         restrict: 'A',
         link: function(scope,element,attrs){
@@ -1131,6 +1135,7 @@ startModule.directive('historyScroll',function($timeout){
 
                 // Aus irgendeinem Grund bleibt bei der Subtraktion immer 1px übrig, daher die Prüfung auf <5
                 // Todo: Herausfinden wieso das zum Geier so ist
+
                 if((element[0].scrollHeight - element[0].scrollTop) - element[0].clientHeight < 5){
                     isScrolled = false;
                 } else{
@@ -1148,6 +1153,9 @@ startModule.directive('historyScroll',function($timeout){
             scope.$watch(function(){return element[0].scrollHeight;},function(){
                     if(!isScrolled){
                         element[0].scrollTop = element[0].scrollHeight;
+                        Chat.unreadMessages = 0;
+                    } else{
+                        Chat.unreadMessages++;
                     }
             },true);
 
@@ -1197,6 +1205,37 @@ startModule.directive('pushMenu',function(User,purr,Bot){
     }
     
     
+});
+startModule.directive('unreadMessages',function(Chat,$document){
+
+    return{
+        restrict: 'A',
+        link: function(scope,element,attrs) {
+
+            var doc = angular.element(window);
+
+            scope.title = 'Protochat';
+
+            doc.bind('focus',function(){
+                scope.$apply(function(){
+                    Chat.unreadMessages = 0;
+                    scope.title = 'Protochat';
+                });
+            });
+
+            scope.$watch(function () {
+                return Chat.unreadMessages;
+            }, function () {
+                if(Chat.unreadMessages){
+                    scope.title = '(' + Chat.unreadMessages + ') Protochat';
+                } else{
+                    scope.title = 'Protochat'
+                }
+            });
+
+        }
+    }
+
 });
 var botModule = angular.module('bot',[]);
 botModule.service('Bot',function(Chat){
